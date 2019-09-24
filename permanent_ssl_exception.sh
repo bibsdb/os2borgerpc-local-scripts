@@ -13,4 +13,4 @@ if [ ! -d "/home/.skjult/.pki/nssdb" ]; then
   certutil -d /home/.skjult/.pki/nssdb -N
 fi
 
-certutil -d sql:/home/.skjult/.pki/nssdb -A -t P -n os2display.teknik.local -i $certificate 
+certutil -d sql:/home/.skjult/.pki/nssdb -A -t P -n $certificate -i $certificate 
