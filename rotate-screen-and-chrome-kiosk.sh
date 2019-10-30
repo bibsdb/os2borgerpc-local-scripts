@@ -20,9 +20,9 @@ cat > /home/.skjult/.chrome.sh << EOF
 # Rotate screen
 xrandr -o $rotation
 
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/.skjult/.config/google-chrome/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/.skjult/.config/google-chrome/Default/Preferences
-sed -i 's/"restore_on_startup":[0-9]/"restore_on_startup":0/' /home/.skjult/.config/google-chrome/Default/Preferences
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/user/.config/google-chrome/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/user/.config/google-chrome/Default/Preferences
+sed -i 's/"restore_on_startup":[0-9]/"restore_on_startup":0/' /home/user/.config/google-chrome/Default/Preferences
 google-chrome --kiosk $site --full-screen --password-store=basic
 EOF
 
@@ -42,7 +42,7 @@ rm -f $autostart_dir/*chrome*
 cat <<CHROME-DESKTOP > $autostart_dir/chrome.desktop
 [Desktop Entry]
 Type=Application
-Exec=/home/.skjult/.chrome.sh
+Exec=/home/user/.chrome.sh
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
