@@ -20,6 +20,9 @@ cat > /home/.skjult/.chrome.sh << EOF
 # Rotate screen
 xrandr -o $rotation
 
+# Sleep 20 seconds. Leaves time to establish network connection.
+sleep 20
+
 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/user/.config/google-chrome/Default/Preferences
 sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/user/.config/google-chrome/Default/Preferences
 sed -i 's/"restore_on_startup":[0-9]/"restore_on_startup":0/' /home/user/.config/google-chrome/Default/Preferences
