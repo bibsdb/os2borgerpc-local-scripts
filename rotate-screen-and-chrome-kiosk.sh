@@ -42,10 +42,11 @@ rm -f $autostart_dir/*chrome*
 cat <<CHROME-DESKTOP > $autostart_dir/chrome.desktop
 [Desktop Entry]
 Type=Application
-Exec=sleep 15 && /home/user/.chrome.sh
+Exec=/home/user/.chrome.sh
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=15
 Name[en_US]=Chrome
 Name=Chrome
 Comment[en_US]=run the Google-chrome webbrowser at startup
