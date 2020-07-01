@@ -1,44 +1,4 @@
 #!/usr/bin/env bash
-#================================================================
-# HEADER
-#================================================================
-#% SYNOPSIS
-#+    shutdown_and_wakeup.sh --args <hours> <minutes> <hours>
-#%
-#% DESCRIPTION
-#%    This is a script to make a OS2BorgerPC machine shutdown at a certain time.
-#%    Synopsis:
-#%
-#%      shutdown_and_wakeup.sh <hours> <minutes> <hours>
-#%
-#%    to enable shutdown mechanism.
-#%
-#%      shutdown_and_wakeup.sh --off
-#%
-#%    to disable.
-#%
-#%    We'll suppose the user only wants to have regular shutdown once a day
-#%    as specified by the <hours> and <minutes> parameters. Thus, any line in
-#%    crontab already specifying a shutdown will be deleted before a new one is
-#%    inserted.
-#%    We'll also suppose the user wants the machine to wakeup after X numbers
-#%     of hours after shutdown everyday.
-#%
-#================================================================
-#- IMPLEMENTATION
-#-    version         shutdown_and_wakeup.sh (magenta.dk) 0.0.1
-#-    author          Danni Als
-#-    copyright       Copyright 2018, Magenta Aps"
-#-    license         GNU General Public License
-#-    email           danni@magenta.dk
-#-
-#================================================================
-#  HISTORY
-#     2018/12/12 : danni : Script creation - based on shutdown_at_time.sh
-#
-#================================================================
-# END_OF_HEADER
-#================================================================
 
 TCRON=/tmp/oldcron
 USERCRON=/tmp/usercron
@@ -54,6 +14,7 @@ then
     if [ -f $TCRON ]
     then
         sed -i -e "/\/rtcwake/d" $TCRON
+        sed -i -e "/pkill/d" $TCRON
         crontab $TCRON
     fi
 
@@ -70,15 +31,24 @@ else
         HOURS_WEEKDAY=$1
         MINUTES_WEEKDAY=$2
         SECONDS_TO_WAKEUP_WEEKDAY=$(expr 3600 \* $3)
+        # We wan't to do a logout 15 minutes after the computer wakes up to solve network issues
+        # Lets calculate when to do the logout
+        SECONDS_TO_WAKEUP_WEEKDAY_PLUS_15_MIN=$(($SECONDS_TO_WAKEUP_WEEKDAY + 60*15))
+        LOGOUT_TIME_WEEKDAY=$(date -d "$HOURS_WEEKDAY$MINUTES_WEEKDAY +$SECONDS_TO_WAKEUP_WEEKDAY_PLUS_15_MIN seconds" +"%H%M"); 
 
-	HOURS_WEEKEND=$4
+	    HOURS_WEEKEND=$4
         MINUTES_WEEKEND=$5
         SECONDS_TO_WAKEUP_WEEKEND=$(expr 3600 \* $6)
+        # We wan't to do a logout 15 minutes after the computer wakes up to solve network issues
+        # Lets calculate when to do the logout
+        SECONDS_TO_WAKEUP_WEEKEND_PLUS_15_MIN=$(($SECONDS_TO_WAKEUP_WEEKEND + 60*15))
+        LOGOUT_TIME_WEEKEND=$(date -d "$HOURS_WEEKEND$MINUTES_WEEKEND +$SECONDS_TO_WAKEUP_WEEKEND_PLUS_15_MIN seconds" +"%H%M"); 
 
         # We still remove shutdown lines, if any
         if [ -f $TCRON ]
         then
             sed -i -e "/\/rtcwake/d" $TCRON
+            sed -i -e "/pkill/d" $TCRON
         fi
         if [ -f $USERCRON ]
         then
@@ -86,7 +56,10 @@ else
         fi
         # Assume the parameters are already validated as integers.
         echo "$MINUTES_WEEKDAY $HOURS_WEEKDAY * * 1-5 /usr/sbin/rtcwake -m off -s $SECONDS_TO_WAKEUP_WEEKDAY" >> $TCRON
-	echo "$MINUTES_WEEKEND $HOURS_WEEKEND * * 6,0 /usr/sbin/rtcwake -m off -s $SECONDS_TO_WAKEUP_WEEKEND" >> $TCRON
+	    echo "$MINUTES_WEEKEND $HOURS_WEEKEND * * 6,0 /usr/sbin/rtcwake -m off -s $SECONDS_TO_WAKEUP_WEEKEND" >> $TCRON
+        # Add logout of user to crontab
+        echo "${LOGOUT_TIME_WEEKDAY:0:2} ${LOGOUT_TIME_WEEKDAY:2:4}  * * 1-5 pkill -KILL -u user" >> $TCRON
+        echo "${LOGOUT_TIME_WEEKEND:0:2} ${LOGOUT_TIME_WEEKEND:2:4}  * * 6,0 pkill -KILL -u user" >> $TCRON
         crontab $TCRON
 	
 	#WEEKDAYS
