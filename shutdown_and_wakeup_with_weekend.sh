@@ -58,8 +58,8 @@ else
         echo "$MINUTES_WEEKDAY $HOURS_WEEKDAY * * 1-5 /usr/sbin/rtcwake -m off -s $SECONDS_TO_WAKEUP_WEEKDAY" >> $TCRON
 	    echo "$MINUTES_WEEKEND $HOURS_WEEKEND * * 6,0 /usr/sbin/rtcwake -m off -s $SECONDS_TO_WAKEUP_WEEKEND" >> $TCRON
         # Add logout of user to crontab
-        echo "${LOGOUT_TIME_WEEKDAY:0:2} ${LOGOUT_TIME_WEEKDAY:2:4}  * * 1-5 pkill -KILL -u user" >> $TCRON
-        echo "${LOGOUT_TIME_WEEKEND:0:2} ${LOGOUT_TIME_WEEKEND:2:4}  * * 6,0 pkill -KILL -u user" >> $TCRON
+        echo "${LOGOUT_TIME_WEEKDAY:2:4} ${LOGOUT_TIME_WEEKDAY:0:2}  * * 1-5 pkill -KILL -u user" >> $TCRON
+        echo "${LOGOUT_TIME_WEEKEND:2:4} ${LOGOUT_TIME_WEEKEND:0:2}  * * 6,0 pkill -KILL -u user" >> $TCRON
         crontab $TCRON
 	
 	#WEEKDAYS
