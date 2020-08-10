@@ -12,3 +12,6 @@ computernavn=$1
 
 hostnamectl set-hostname $computernavn
 
+set_bibos_config hostname $computernavn
+bibos_push_config_keys hostname
+
