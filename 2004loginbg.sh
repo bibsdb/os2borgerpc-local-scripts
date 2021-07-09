@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-
-# BIBSDB: Change the background of the login screen
-# Solution was found here:
-# https://askubuntu.com/questions/797845/how-do-i-change-the-login-screen-in-ubuntu-16-04
-# Requires a restart to take effect
+# Simply overwrite  /usr/share/backgrounds/warty-final-ubuntu.png
 
 set -x
 
@@ -31,7 +27,6 @@ fi
 # Overwrite default desktop background
 IMAGE_FULL_PATH=/usr/share/backgrounds/warty-final-ubuntu.png
 sudo /bin/cp -rf "$IMAGE_FILE"  "$IMAGE_FULL_PATH"
-
 
 exit 0
 
