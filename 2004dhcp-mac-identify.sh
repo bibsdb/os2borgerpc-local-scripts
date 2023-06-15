@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Inspred by https://fabianlee.org/2019/10/05/bash-setting-and-replacing-values-in-a-properties-file-use-sed/
 
-# Replace lines that starts with "send dhcp-client-identifier" with "send dhcp-client-identifier = hardware;"
-# Also matches lines that starts with "#send dhcp-client-identifier"
-sed -ir "s/^[#]*\s*send dhcp-client-identifier.*/send dhcp-client-identifier = hardware;/" /etc/dhcp/dhclient.conf
+# Remove all lines that contains the string "dhcp-identifier"
+sed -i '/dhcp-identifier/d' /etc/netplan/00-installer-config.yaml
+# Insert a line after a line that contains "dhcp4:". Insert " \ \ \ \ \ \ dhcp-identifier: mac"
+# The spaces are nescessary to get the right indention in the yaml-file
+sed -ir '/^[#]*\s*dhcp4:.*/a \ \ \ \ \ \ dhcp-identifier: mac' /etc/netplan/00-installer-config.yaml
