@@ -6,3 +6,6 @@ sed -i '/dhcp-identifier/d' /etc/netplan/00-installer-config.yaml
 # Insert a line after a line that contains "dhcp4:". Insert " \ \ \ \ \ \ dhcp-identifier: mac"
 # The spaces are nescessary to get the right indention in the yaml-file
 sed -ir '/^[#]*\s*dhcp4:.*/a \ \ \ \ \ \ dhcp-identifier: mac' /etc/netplan/00-installer-config.yaml
+
+# Enable the new configuration
+netplan apply
