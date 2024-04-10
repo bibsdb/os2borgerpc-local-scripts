@@ -33,4 +33,3 @@ sudo cp ${tgtDir}/elo-mt-usb/99-elotouch.rules /etc/udev/rules.d
 # Copy and enable the elo.service systemd script
 sudo cp ${tgtDir}/elo-mt-usb/elo.service /etc/systemd/system/
 sudo systemctl enable elo.service
-reboot now
