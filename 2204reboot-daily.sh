@@ -1,20 +1,16 @@
-#!/usr/bin/env bash
-# Restart computer at 07:10 to clear memory
+#!/bin/bash
 
-TCRON=/tmp/oldcron
+# Write out current crontab
+crontab -l > mycron
 
-crontab -l > $TCRON
-
-if [ -f $TCRON ]
-then
-
-    # Delete old entries
-    sed -i -e "/\shutdown/d" $TCRON
-    crontab $TCRON
-
-    # Add daily reboot
-    echo "10 7  * * * /sbin/shutdown -r" >> $TCRON
-    crontab $TCRON
-
-    rm $TCRON
+# Check if the crontab already contains the reboot command
+if grep -q "/sbin/shutdown -r now" mycron; then
+    # If it does, delete the line
+    sed -i '/\/sbin\/shutdown -r now/d' mycron
 fi
+
+# Echo new cron into cron file
+echo "10 7 * * * /sbin/shutdown -r now" >> mycron
+# Install new cron file
+crontab mycron
+rm mycron
