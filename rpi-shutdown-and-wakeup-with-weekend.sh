@@ -6,7 +6,7 @@
 # When the HDMI signal is resumed, the screen will wake up.
 # 
 # Script takes four arguments.
-# Arguments need to be given in the right order.
+# Arguments need to be given in the right order. They all have to be of type Time.
 # 
 # Arguments:
 # weekday-wakeup-time
