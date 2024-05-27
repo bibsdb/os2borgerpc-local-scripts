@@ -2,18 +2,18 @@
 
 if [ $# -ne 1 ]
 then
-    echo "Usage: $(basename $0) {elo-usb.tar} "
+    echo "Usage: $(basename $0) {.tgz} "
     echo ""
     exit -1
 fi
 
 # We have the Elo 
 
-DRIVER_TAR_FILE=$1
+DRIVER_TGZ=$1
 
-if [ ! -f $DRIVER_TAR_FILE ]
+if [ ! -f $DRIVER_TGZ ]
 then
-    echo "No such file: $DRIVER_TAR_FILE"
+    echo "No such file: $DRIVER_TGZ"
     echo "Please supply a path to an existing elo driver tar file"
     exit -1
 fi
@@ -21,8 +21,7 @@ fi
 
 # Add elo touch driver
 tgtDir="/etc/opt"
-tar -zxvf "$DRIVER_TAR_FILE" -C ${tgtDir}
-mv ${tgtDir}/bin-mt-usb ${tgtDir}/elo-mt-usb
+tar xvfz "$DRIVER_TGZ" -C ${tgtDir}
 cd ${tgtDir}/elo-mt-usb
 sudo chmod 777 *
 sudo chmod 444 *.txt
